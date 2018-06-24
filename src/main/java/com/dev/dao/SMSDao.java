@@ -1,8 +1,11 @@
 package com.dev.dao;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import com.dev.domain.SMS;
 
@@ -14,7 +17,7 @@ import com.dev.domain.SMS;
  * possible create new query methods working only by defining their signature!
  */
 @Transactional
-public interface SMSDao extends CrudRepository<SMS, Long> {
+public interface SMSDao extends CrudRepository<SMS, Long>, JpaSpecificationExecutor<SMS> {
 
   /**
    * Return the user having the passed email or null if no user is found.
@@ -22,5 +25,6 @@ public interface SMSDao extends CrudRepository<SMS, Long> {
    * @param email the user email.
    */
   public SMS findByMessageID(String messageID);
+  public List<SMS> findBySentToKannel(boolean sentToKannel, org.springframework.data.domain.Pageable pageable);
 
 } 

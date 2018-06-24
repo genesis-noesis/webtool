@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,6 +71,7 @@ public abstract class SMSFactory {
 	public void setSmsDao(SMSDao smsDao) {
 		this.smsDao = smsDao;
 	}
+	
 
 	/**
 	 * @param smsFileDao the smsFileDao to set
@@ -78,4 +80,7 @@ public abstract class SMSFactory {
 		this.smsFileDao = smsFileDao;
 	}
 	
+	public List<SMS> findBySentToKannel(boolean sentToKannel, org.springframework.data.domain.Pageable pageable){
+		return this.smsDao.findBySentToKannel(sentToKannel, pageable);
+	}
 }

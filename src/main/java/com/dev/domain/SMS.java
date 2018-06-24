@@ -1,7 +1,9 @@
 package com.dev.domain;
 
 import java.util.Date;
+import java.util.Random;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +26,8 @@ public class SMS {
 	private String messageID;
 	private Date createdDate;
 	private String senderId;
-	private boolean sentTOKannel;
+	@Column(name="sent_to_kannel", nullable=false)
+	private boolean sentToKannel;
 	@ManyToOne
 	@JoinColumn(name="sms_file_id", nullable=false)
 	private SMSFile smsFile;
@@ -37,6 +40,8 @@ public class SMS {
 		this.mobileNumber = number;
 		this.setMessage(message);
 		this.createdDate = new Date();
+		this.sentToKannel = false;
+		this.messageID = number+"WEBTOOL"+getRandomNumberInRange(100000, 1000000);
 	}
 
 	/* (non-Javadoc)
@@ -132,17 +137,17 @@ public class SMS {
 	}
 
 	/**
-	 * @return the sentTOKannel
+	 * @return the sentToKannel
 	 */
-	public boolean isSentTOKannel() {
-		return sentTOKannel;
+	public boolean isSentToKannel() {
+		return sentToKannel;
 	}
 
 	/**
 	 * @param sentTOKannel the sentTOKannel to set
 	 */
-	public void setSentTOKannel(boolean sentTOKannel) {
-		this.sentTOKannel = sentTOKannel;
+	public void setSentTOKannel(boolean sentToKannel) {
+		this.sentToKannel = sentToKannel;
 	}
 
 	public SMSFile getSmsFile() {
@@ -153,4 +158,14 @@ public class SMS {
 		this.smsFile = smsFile;
 	}
 
+
+	private static int getRandomNumberInRange(int min, int max) {
+
+		if (min >= max) {
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
+	}
 }

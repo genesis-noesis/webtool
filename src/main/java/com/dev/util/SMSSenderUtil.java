@@ -6,16 +6,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.dev.dao.SMSDao;
 import com.dev.domain.SMS;
 
-public class SMSSenderUtil {
+public class SMSSenderUtil{
+	
 	public static String sendMessageToKannel (SMS sms) throws IOException {
 		// HTTP GET request
-		String messageId = sms.getMobileNumber()+"WEBTOOL"+getRandomNumberInRange(100000, 1000000);
+		//String messageId = sms.getMobileNumber()+"WEBTOOL"+getRandomNumberInRange(100000, 1000000);
 
-		String dlrUrl = "http://52.66.156.150:8080/noesis-smpp/DLRRequestListener?dr=%a&smscid=%i&statuscd=%d&uniqID="+messageId+"&customerref=ashish"+
+		String dlrUrl = "http://52.66.156.150:8080/noesis-smpp/DLRRequestListener?dr=%a&smscid=%i&statuscd=%d&uniqID="+sms.getMessageID()+"&customerref=ashish"+
 				"&recivetime="+System.currentTimeMillis()+"&dlrtype=9&mobile="+sms.getMobileNumber()+"&submittime="+System.currentTimeMillis()
 				+"&expiry=12senderid=NOESIS&carrierid=TELCONAME&circleid=DELHI&routeid=DELHI&systemid=%o";
 
