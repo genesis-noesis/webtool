@@ -13,8 +13,8 @@ import com.dev.domain.SMS;
 public class SMSSenderUtil {
 	public static String sendMessageToKannel (SMS sms) throws IOException {
 		// HTTP GET request
-		String messageId = sms.getNumber()+"GUI"+getRandomNumberInRange(100000, 1000000);
-		
+		String messageId = sms.getNumber()+"WEBTOOL"+getRandomNumberInRange(100000, 1000000);
+
 		String dlrUrl = "http://52.66.156.150:8080/noesis-smpp/DLRRequestListener?dr=%a&smscid=%i&statuscd=%d&uniqID="+messageId+"&customerref=ashish"+
 				"&recivetime="+System.currentTimeMillis()+"&dlrtype=9&mobile="+sms.getNumber()+"&submittime="+System.currentTimeMillis()
 				+"&expiry=12senderid=NOESIS&carrierid=TELCONAME&circleid=DELHI&routeid=DELHI&systemid=%o";
