@@ -13,13 +13,13 @@ import com.dev.domain.SMS;
 public class SMSSenderUtil {
 	public static String sendMessageToKannel (SMS sms) throws IOException {
 		// HTTP GET request
-		String messageId = sms.getNumber()+"WEBTOOL"+getRandomNumberInRange(100000, 1000000);
+		String messageId = sms.getMobileNumber()+"WEBTOOL"+getRandomNumberInRange(100000, 1000000);
 
 		String dlrUrl = "http://52.66.156.150:8080/noesis-smpp/DLRRequestListener?dr=%a&smscid=%i&statuscd=%d&uniqID="+messageId+"&customerref=ashish"+
-				"&recivetime="+System.currentTimeMillis()+"&dlrtype=9&mobile="+sms.getNumber()+"&submittime="+System.currentTimeMillis()
+				"&recivetime="+System.currentTimeMillis()+"&dlrtype=9&mobile="+sms.getMobileNumber()+"&submittime="+System.currentTimeMillis()
 				+"&expiry=12senderid=NOESIS&carrierid=TELCONAME&circleid=DELHI&routeid=DELHI&systemid=%o";
 
-		String url = "http://52.66.156.150:13013/cgi-bin/sendsms?username=test&password=test&smscid=test&from=NOESIS&to="+URLEncoder.encode(String.valueOf(sms.getNumber()),"UTF-8")+
+		String url = "http://52.66.156.150:13013/cgi-bin/sendsms?username=test&password=test&smscid=test&from=NOESIS&to="+URLEncoder.encode(String.valueOf(sms.getMobileNumber()),"UTF-8")+
 				"&text="+URLEncoder.encode(sms.getMessage(),"UTF-8")+"&coding=0&dlr-mask=23&dlr-url="+URLEncoder.encode(dlrUrl, "UTF-8");
 
 		URL obj = new URL(url);

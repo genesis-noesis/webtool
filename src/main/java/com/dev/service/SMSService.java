@@ -1,59 +1,25 @@
 package com.dev.service;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.dev.domain.SMS;
-import com.dev.util.SMSSenderUtil;
+import com.dev.dao.SMSFileDao;
+import com.dev.domain.SMSFile;
 
-public abstract class SMSService {
+@Service
+public class SMSService{
 
-	abstract Parser createParser(File file);
+	@Autowired
+	private SMSFileDao smsFileDao;
 	
-	public void process(MultipartFile file)
-	{
-		if (!file.isEmpty()) {
-			try {
-				byte[] bytes = file.getBytes();
-
-				System.out.println("Saving file");
-/*				// Creating the directory to store file
-				String rootPath = System.getProperty("catalina.home");
-				File dir = new File(rootPath + File.separator + "tmpFiles");
-				if (!dir.exists())
-					dir.mkdirs();
-
-				// Create the file on server
-				File serverFile = new File(dir.getAbsolutePath()
-						+ File.separator + name);*/
-				File serverFile = new File("test");
-				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(serverFile));
-				stream.write(bytes);
-				stream.close();
-
-				System.out.println("Server File Location="
-						+ serverFile.getAbsolutePath());
-				
-				Parser parser  = createParser(serverFile);
-				List<SMS> smsList = parser.parse();
-				serverFile.delete();
-				for(SMS sms : smsList)
-				{
-					SMSSenderUtil.sendMessageToKannel(sms);
-				}
-				System.out.println(smsList);
-				System.out.println("Messages sent successfully");
-
-			} catch (Exception e) {
-				System.err.println("You failed to upload  => " + e.getMessage());
-			}
-		} else {
-			System.err.println("You failed to upload because the file was empty.");
-		}
+	public List<SMSFile> listFiles() {
+		return (List<SMSFile>) this.smsFileDao.findAll();
 	}
+
+	public SMSFile findById(long id) {
+		return this.smsFileDao.findById(id);
+	}
+	
 }

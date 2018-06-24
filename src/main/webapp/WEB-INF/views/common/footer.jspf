@@ -1,0 +1,6 @@
+<%--.jspf files are JSP fragments. They're designed to be statically included in another JSP file, not compiled on their own --%>
+<footer class="container-fluid text-center">
+         <p>Footer Text</p>
+      </footer>
+   </body>
+</html>

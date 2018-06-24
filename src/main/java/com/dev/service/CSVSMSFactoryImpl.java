@@ -6,18 +6,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.dev.domain.SMS;
 
-public class XMLParserImpl implements Parser{
-	
-	private File file;
-	
-    public XMLParserImpl(File file) {
+@Service
+public class CSVSMSFactoryImpl extends SMSFactory implements Parser{
+
+	public CSVSMSFactoryImpl() {
 		super();
-		this.file = file;
 	}
-    
-    public List<SMS> parse() {
+
+	public List<SMS> parse(File file) {
         String line = "";
         String cvsSplitBy = ",";
         List<SMS> smsList = new ArrayList<>();
@@ -26,9 +26,10 @@ public class XMLParserImpl implements Parser{
             while ((line = br.readLine()) != null) {
 
                 // use comma as separator
-                String[] sms = line.split(cvsSplitBy);
-                smsList.add(new SMS(Long.parseLong(sms[0]), sms[1]));
-                System.out.println("SMS [number= " + sms[0] + " , message=" + sms[1] + "]");
+                String[] smsVal = line.split(cvsSplitBy);
+                SMS sms = new SMS(Long.parseLong(smsVal[0]), smsVal[1]);
+                smsList.add(sms);
+                System.out.println("SMS [number= " + smsVal[0] + " , message=" + smsVal[1] + "]");
             }
 
         } catch (IOException e) {
@@ -36,4 +37,10 @@ public class XMLParserImpl implements Parser{
         }
 		return smsList;
     }
+
+	@Override
+	Parser createParser() {
+		return new CSVSMSFactoryImpl();
+	}
+
 }
